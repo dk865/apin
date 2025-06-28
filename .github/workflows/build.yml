@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: Build iOS App
-    runs-on: macos-latest
+    runs-on: macos-15
 
     steps:
     - name: Checkout
@@ -18,7 +18,7 @@ jobs:
     - name: Set up Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: latest-stable
+        xcode-version: '16.2'
 
     - name: Install the Apple certificate and provisioning profile
       run: |
@@ -26,7 +26,7 @@ jobs:
         echo "Building unsigned app - skipping certificate setup"
 
     - name: Cache derived data
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/Library/Developer/Xcode/DerivedData
         key: ${{ runner.os }}-derived-data-${{ hashFiles('**/*.xcodeproj', '**/*.xcworkspace') }}
@@ -94,7 +94,7 @@ jobs:
           -allowProvisioningUpdates
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ApinChat-Unsigned-${{ github.run_number }}
         path: |
@@ -112,3 +112,4 @@ jobs:
         # Show build info
         if [ -f "build/export/ApinChat.ipa" ]; then
           echo "📄 IPA file size: $(ls -lh build/export/ApinChat.ipa | awk '{print $5}')"
+        fi
